@@ -1,0 +1,87 @@
+@import './variables';
+
+.table-page {
+  .sub-text { font-size: 12px; color: $grey-500; margin-top: 2px; }
+  .message-cell { max-width: 260px; }
+  .empty-row { text-align: center; color: $grey-500; padding: 30px !important; }
+
+  .status-select {
+    padding: 7px 10px;
+    border-radius: $radius-sm;
+    border: 1.5px solid $grey-300;
+    font-size: 13px;
+    background: $white;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 8px;
+
+    .btn { padding: 8px 14px; font-size: 13px; }
+  }
+
+  .menu-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 18px 20px;
+    margin-bottom: 18px;
+    background: $white;
+    border-radius: $radius-md;
+    box-shadow: $shadow-soft;
+
+    input {
+      flex: 1;
+      min-width: 140px;
+      padding: 11px 14px;
+      border-radius: $radius-sm;
+      border: 1.5px solid $grey-300;
+
+      &:focus { outline: none; border-color: $gold-500; }
+    }
+
+    .btn { flex-shrink: 0; }
+  }
+
+  .menu-thumb-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .menu-thumb {
+    width: 52px;
+    height: 52px;
+    border-radius: $radius-sm;
+    object-fit: cover;
+  }
+
+  .menu-thumb-empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: $cream-100;
+    color: $grey-500;
+  }
+
+  .thumb-upload-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+  }
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+  font-size: 13.5px;
+  color: $grey-500;
+
+  .btn { padding: 8px 16px; font-size: 13px; }
+}

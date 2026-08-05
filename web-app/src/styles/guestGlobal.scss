@@ -1,0 +1,191 @@
+@import './variables';
+
+// Everything here is scoped under .page (the wrapper every guest-facing
+// screen uses) so it never collides with the admin dashboard's own
+// .btn / .field / .badge styles defined in global.scss
+
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  // max-width: 480px;
+  margin: 0 auto;
+  background: $cream-50;
+  box-shadow: $shadow-soft;
+  position: relative;
+  font-family: $font-body;
+  color: $navy-900;
+
+  h1, h2, h3 { font-family: $font-display; color: $navy-900; }
+
+  .page-content {
+    flex: 1;
+    padding: 24px 20px 40px;
+  }
+
+  // ===== Buttons =====
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 22px;
+    border-radius: $radius-full;
+    font-weight: 600;
+    font-size: 15px;
+    transition: $transition;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+
+    &-primary {
+      background: linear-gradient(135deg, $navy-800, $navy-950);
+      color: $white;
+      box-shadow: $shadow-card;
+
+      &:hover { transform: translateY(-1px); box-shadow: $shadow-lift; }
+      &:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    }
+
+    &-gold {
+      background: linear-gradient(135deg, $gold-400, $gold-500);
+      color: $navy-950;
+      box-shadow: $shadow-card;
+
+      &:hover { transform: translateY(-1px); box-shadow: $shadow-lift; }
+      &:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    }
+
+    &-outline {
+      background: transparent;
+      border: 1.5px solid $navy-700;
+      color: $navy-800;
+
+      &:hover { background: rgba(22, 35, 61, 0.05); }
+    }
+
+    &-ghost {
+      background: transparent;
+      color: $navy-700;
+      width: auto;
+      padding: 8px 12px;
+    }
+  }
+
+  // ===== Form field =====
+  .field {
+    margin-bottom: 16px;
+
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: $navy-700;
+      margin-bottom: 6px;
+      letter-spacing: 0.2px;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 13px 14px;
+      border-radius: $radius-sm;
+      border: 1.5px solid $grey-300;
+      background: $white;
+      transition: $transition;
+      font-family: $font-body;
+      font-size: 15px;
+
+      &:focus {
+        outline: none;
+        border-color: $gold-500;
+        box-shadow: 0 0 0 3px rgba(200, 164, 94, 0.18);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .field-error {
+      color: $danger;
+      font-size: 12.5px;
+      margin-top: 5px;
+    }
+  }
+
+  // ===== Priority selector =====
+  .priority-select {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+
+    .priority-option {
+      flex: 1;
+      padding: 12px;
+      border-radius: $radius-sm;
+      border: 1.5px solid $grey-300;
+      text-align: center;
+      font-weight: 600;
+      font-size: 14px;
+      transition: $transition;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      background: $white;
+      cursor: pointer;
+
+      &.active-normal {
+        border-color: $navy-700;
+        background: $navy-900;
+        color: $white;
+      }
+
+      &.active-urgent {
+        border-color: $urgent;
+        background: $urgent;
+        color: $white;
+      }
+    }
+  }
+
+  // ===== Status / priority badges =====
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: $radius-full;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+
+    &.urgent { background: rgba(225, 29, 60, 0.12); color: $urgent; }
+    &.normal { background: rgba(44, 70, 117, 0.1); color: $navy-700; }
+    &.pending { background: rgba(217, 140, 43, 0.15); color: $warning; }
+  }
+
+  .spinner {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid rgba(255,255,255,0.4);
+    border-top-color: $white;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.fade-in {
+  animation: fadeIn 0.35s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

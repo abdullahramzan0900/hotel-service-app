@@ -1,0 +1,25 @@
+@import './variables';
+
+.form-page {
+  .form-header {
+    padding: 20px 20px 6px;
+    background: $white;
+    border-bottom: 1px solid $grey-100;
+
+    h2 { font-size: 22px; margin: 6px 0 4px; }
+    .muted { color: $grey-500; font-size: 13.5px; }
+  }
+
+  .back-btn {
+    color: $navy-700;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0;
+    margin-bottom: 6px;
+  }
+
+  .server-error {
+    margin-bottom: 14px;
+    text-align: center;
+  }
+}
