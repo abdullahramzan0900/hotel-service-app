@@ -2,6 +2,8 @@ import nodemailer from 'nodemailer';
 
 let transporter = null;
 
+// let transporter
+
 function getTransporter() {
   if (transporter) return transporter;
   transporter = nodemailer.createTransport({
