@@ -85,3 +85,31 @@
 
   .btn { padding: 8px 16px; font-size: 13px; }
 }
+.customer-search {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: $white;
+  border-radius: $radius-sm;
+  padding: 10px 14px;
+  margin-bottom: 18px;
+  box-shadow: $shadow-soft;
+  color: $grey-500;
+  max-width: 360px;
+
+  input {
+    border: none;
+    outline: none;
+    flex: 1;
+    font-size: 14px;
+    background: transparent;
+  }
+}
+.retry-result {
+  background: rgba(47, 158, 110, 0.1);
+  color: $navy-900;
+  padding: 10px 14px;
+  border-radius: $radius-sm;
+  font-size: 13.5px;
+  margin-bottom: 16px;
+}

@@ -5,7 +5,7 @@ import FoodOrder from '../models/FoodOrder.js';
 import MenuItem from '../models/MenuItem.js';
 import { validateGuestContact, normalizeUKPhone } from '../utils/validators.js';
 import { sendOrderReceivedEmail, sendRoomServiceReceivedEmail, sendIssueReceivedEmail } from '../utils/mailer.js';
-
+import { upsertCustomer } from '../utils/customerUpsert.js';
 const router = express.Router();
 
 const PRIORITIES = ['normal', 'urgent'];
@@ -52,6 +52,7 @@ router.post('/room/:token/service', async (req, res) => {
 
   req.app.get('io')?.emit('new_request', request);
   sendRoomServiceReceivedEmail(request); // fire and forget
+  upsertCustomer({ name: request.guestName, email: request.guestEmail, phone: request.guestPhone }); // fire and forget
   res.status(201).json({ message: 'Your request has been sent to our staff.', request });
 });
 // POST /api/room/:token/issue -> report an issue
@@ -83,6 +84,7 @@ router.post('/room/:token/issue', async (req, res) => {
 
   req.app.get('io')?.emit('new_request', request);
   sendIssueReceivedEmail(request); // fire and forget
+  upsertCustomer({ name: request.guestName, email: request.guestEmail, phone: request.guestPhone }); // fire and forget
   res.status(201).json({ message: 'Your issue has been reported to our staff.', request });
 });
 
@@ -127,6 +129,7 @@ router.post('/room/:token/order', async (req, res) => {
 
   req.app.get('io')?.emit('new_order', order);
   sendOrderReceivedEmail(order); // fire and forget
+  upsertCustomer({ name: order.guestName, email: order.guestEmail, phone: order.guestPhone }); // fire and forget
   res.status(201).json({ message: 'Your order has been received and is pending kitchen approval.', order });
 });
 

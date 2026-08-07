@@ -10,6 +10,7 @@ import Orders from './pages/Orders';
 import Rooms from './pages/Rooms';
 import Menu from './pages/Menu';
 import Analytics from './pages/Analytics';
+import Customers from './pages/Customers';
 
 // Guest pages
 import RoomHome from './pages/RoomHome';
@@ -49,6 +50,7 @@ export default function App() {
         <Route path="rooms" element={<Rooms />} />
         <Route path="menu" element={<Menu />} />
         <Route path="analytics" element={<Analytics />} />
+        <Route path="customers" element={<Customers />} />
       </Route>
 
       {/* Default: send root visits to the staff login/dashboard */}

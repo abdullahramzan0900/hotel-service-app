@@ -8,11 +8,12 @@ import Request from '../models/Request.js';
 import FoodOrder from '../models/FoodOrder.js';
 import MenuItem from '../models/MenuItem.js';
 import AdminUser from '../models/AdminUser.js';
+import Customer from '../models/Customer.js';
 import { requireAdminAuth } from '../middleware/auth.js';
 import { generateSecureToken } from '../utils/token.js';
 import { sendOrderApprovedEmail, sendOrderRejectedEmail } from '../utils/mailer.js';
 import { uploadImageToBunny, deleteImageFromBunny } from '../utils/bunny.js';
-
+import { upsertMailchimpContact } from '../utils/mailchimp.js';
 const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
@@ -319,6 +320,58 @@ router.get('/analytics', async (req, res) => {
     topItems,
     totalRevenueAllTime: totalRevenue[0]?.total || 0
   });
+});
+
+// ---------- CUSTOMERS (de-duplicated guest list, synced to Mailchimp) ----------
+router.get('/customers', async (req, res) => {
+  const { search } = req.query;
+  const page = Math.max(1, parseInt(req.query.page) || 1);
+  const limit = Math.min(100, Math.max(1, parseInt(req.query.limit) || 20));
+  const filter = {};
+  if (search) {
+    filter.$or = [
+      { name: { $regex: search, $options: 'i' } },
+      { email: { $regex: search, $options: 'i' } }
+    ];
+  }
+
+  const [data, total, totalCustomers] = await Promise.all([
+    Customer.find(filter)
+      .sort({ lastSeen: -1 })
+      .skip((page - 1) * limit)
+      .limit(limit),
+    Customer.countDocuments(filter),
+    Customer.countDocuments()
+  ]);
+
+ res.json({ data, total, page, pages: Math.ceil(total / limit) || 1, totalCustomers });
+});
+
+// Retries the Mailchimp sync for every customer currently marked "failed".
+// Processes them one at a time (not in parallel) to stay well within
+// Mailchimp's rate limits, and returns a summary of what happened.
+router.post('/customers/retry-failed', async (req, res) => {
+  const failedCustomers = await Customer.find({ mailchimpStatus: 'failed' });
+
+  let succeeded = 0;
+  let stillFailed = 0;
+
+  for (const customer of failedCustomers) {
+    try {
+      await upsertMailchimpContact({ name: customer.name, email: customer.email, phone: customer.phone });
+      customer.mailchimpStatus = 'synced';
+      customer.mailchimpSyncedAt = new Date();
+      customer.mailchimpError = '';
+      succeeded++;
+    } catch (err) {
+      customer.mailchimpStatus = 'failed';
+      customer.mailchimpError = err.message;
+      stillFailed++;
+    }
+    await customer.save();
+  }
+
+  res.json({ attempted: failedCustomers.length, succeeded, stillFailed });
 });
 
 export default router;

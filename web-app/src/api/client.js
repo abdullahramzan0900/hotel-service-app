@@ -34,6 +34,8 @@ export const login = (username, password) =>
 
 export const getStats = () => api.get('/admin/stats').then((r) => r.data);
 export const getAnalytics = (days = 14) => api.get('/admin/analytics', { params: { days } }).then((r) => r.data);
+export const getCustomers = (params = {}) => api.get('/admin/customers', { params }).then((r) => r.data);
+export const retryFailedCustomers = () => api.post('/admin/customers/retry-failed').then((r) => r.data);
 
 export const getRequests = (params = {}) => api.get('/admin/requests', { params }).then((r) => r.data);
 export const updateRequestStatus = (id, status) =>
